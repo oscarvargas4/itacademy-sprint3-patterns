@@ -1,3 +1,0 @@
-1) Callback Hell
-    http://callbackhell.com/
-    https://www.paradigmadigital.com/dev/historia-del-callback-hell-en-node-js/
