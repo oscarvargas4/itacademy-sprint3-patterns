@@ -1,5 +1,6 @@
 For execute this app:
-    "node index.js"
+
+    node index.js
 
 # The Singleton Problem
 
@@ -13,7 +14,6 @@ The Singleton Pattern limits the number of instances of a particular object to j
 1. Ensure that a class has just a single instance. Why would anyone want to control how many instances a class has? The most common reason for this is to control access to some shared resource—for example, a database or a file.
 
 Here’s how it works: imagine that you created an object, but after a while decided to create a new one. Instead of receiving a fresh object, you’ll get the one you already created.
-
 Note that this behavior is impossible to implement with a regular constructor since a constructor call must always return a new object by design.
 
 2. Provide a global access point to that instance. Remember those global variables that you (all right, me) used to store some essential objects? While they’re very handy, they’re also very unsafe since any code can potentially overwrite the contents of those variables and crash the app.
