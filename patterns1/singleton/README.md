@@ -1,3 +1,6 @@
+For execute this app:
+    node index.js
+
 # The Singleton Problem
 
 Sometimes you need to make sure that you have one and only one instance of an object. This is where the singleton pattern can be useful. A singleton represents a single instance of an object. Only one can be created, no matter how many times the object is instantiated. If there’s already an instance, the singleton will create a new one.
