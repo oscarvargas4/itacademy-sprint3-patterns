@@ -1,14 +1,14 @@
 const EventEmitter = require("events");
 const eventEmitter = new EventEmitter();
 
-class Theme {
-  constructor(themeName) {
-    this.themeName = themeName;
+class Subject {
+  constructor(subjectName) {
+    this.subjectName = subjectName;
     this.observers = [];
   }
 
   get name() {
-    return this.themeName;
+    return this.subjectName;
   }
 
   get observersArray() {
@@ -17,7 +17,7 @@ class Theme {
 
   subscribe(fn) {
     this.observers.push(fn);
-    console.log(`${fn.name} has been subscribed to ${this.themeName} theme\n`);
+    console.log(`${fn.name} has been subscribed to ${this.subjectName} subject\n`);
   }
 
   unsubscribe(fnToRemove) {
@@ -27,16 +27,16 @@ class Theme {
       }
     });
     console.log(
-      `${fnToRemove.name} has been unsubscribed to ${this.themeName} theme\n`
+      `${fnToRemove.name} has been unsubscribed to ${this.subjectName} subject\n`
     );
   }
 
   notify() {
-    eventEmitter.on(this.themeName, (personName, message) => {
-      console.log(`${this.themeName}: ${personName} has posted a message\n`);
+    eventEmitter.on(this.subjectName, (personName, message) => {
+      console.log(`${this.subjectName}: ${personName} has posted a message\n`);
       this.observers.forEach((fn) => {
         console.log(
-          `${fn.name} has listened message from Theme ${this.themeName}: ${personName} has posted the next message: ${message}\n`
+          `${fn.name} has listened message from ${this.subjectName} Subject: ${personName} has posted the next message: ${message}\n`
         );
       });
     });
@@ -48,17 +48,17 @@ class User {
     this.name = name;
   }
 
-  post(themeName, name, message) {
+  post(subjectName, name, message) {
     if (name == this.name) {
-      eventEmitter.emit(themeName, this.name, message);
+      eventEmitter.emit(subjectName, this.name, message);
     } else {
       throw new Error("Incorrect Name");
     }
   }
 }
 
-const football = new Theme("Football");
-const cyclism = new Theme("Cyclism");
+const football = new Subject("Football");
+const cyclism = new Subject("Cyclism");
 
 const oscar = new User("Oscar Vargas");
 const josep = new User("Josep Pedredol");
