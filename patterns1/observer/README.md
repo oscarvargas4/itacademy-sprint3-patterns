@@ -11,7 +11,7 @@ When building web apps you end up writing many event handlers. Event handlers ar
 
 The event and event-handler paradigm in JavaScript is the manifestation of the Observer design pattern. Another name for the Observer pattern is Pub/Sub, short for Publication/Subscription.
 
-![Observer Diagram](/assets/observer.jpeg "Observer Diagram")
+![Observer Diagram](assets/observer.jpeg "Observer Diagram")
 
 ## Exemple:
 ```
