@@ -12,6 +12,7 @@ When building web apps you end up writing many event handlers. Event handlers ar
 The event and event-handler paradigm in JavaScript is the manifestation of the Observer design pattern. Another name for the Observer pattern is Pub/Sub, short for Publication/Subscription.
 
 ## Exemple:
+```
 // define a class
 class Observable {
   // each instance of the Observer class
@@ -39,6 +40,7 @@ class Observable {
     this.observers.forEach(observer => observer(data));
   }
 }
+```
 
 # The Node.js Event emitter
 If you worked with JavaScript in the browser, you know how much of the interaction of the user is handled through events: mouse clicks, keyboard button presses, reacting to mouse movements, and so on.
@@ -47,9 +49,9 @@ On the backend side, Node.js offers us the option to build a similar system usin
 This module, in particular, offers the EventEmitter class, which we'll use to handle our events.
 
 You initialize that using:
-`
+```
     const EventEmitter = require('events')
     const eventEmitter = new EventEmitter()
-`
+```
     
 
