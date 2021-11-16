@@ -1,0 +1,5 @@
+1) https://www.dottedsquirrel.com/observer-pattern-javascript/
+
+2) https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
+
+3) https://www.oreilly.com/library/view/learning-javascript-design/9781449334840/ch09s05.html
