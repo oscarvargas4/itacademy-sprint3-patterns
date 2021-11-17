@@ -5,36 +5,36 @@ Middleware makes triggers a function for the objects provided as arguments to mo
 ## Basic Middleware Pattern in JavaScript
 In Express, we have the middleware functions with this signature:
 ```
-    const middleare = (req, res, next) => {
-    // do stuffs
-    next()
-    }
+const middleare = (req, res, next) => {
+// do stuffs
+next()
+}
 ```
 
 In Koa, we have this:
 ```
-    const middleware = (ctx, next) => {
-    // do stuffs
-    next()
-    }
+const middleware = (ctx, next) => {
+// do stuffs
+next()
+}
 ```
 
 Basically, you have some objects (`req`, `res` for Express or `ctx` for Koa) and a `next()` function as the arguments of the middleware function. When `next()` is called, the next middleware function is invoked. If you modify the argument objects in the current middleware function, the next middleware will received those modified objects. For example:
 ```
-    // Middleware usage in Koa
+// Middleware usage in Koa
 
-    app.use((ctx, next) => {
-    ctx.name = 'Doe'
-    next()
-    })
+app.use((ctx, next) => {
+ctx.name = 'Doe'
+next()
+})
 
-    app.use((ctx, next) => {
-    console.log(ctx.name) // will log `Doe`
-    })
+app.use((ctx, next) => {
+console.log(ctx.name) // will log `Doe`
+})
 
-    app.use((ctx, next) => {
-    // this will not get invoked
-    })
+app.use((ctx, next) => {
+// this will not get invoked
+})
 ```
 
 And if you don’t call the `next()` function, the execution stops there and the next middleware function will not be invoked.
@@ -42,80 +42,80 @@ And if you don’t call the `next()` function, the execution stops there and the
 ### Implementation
 So, how do you implement a pattern like that? With 30 lines of JavaScript:
 ```
-    function Pipeline(...middlewares) {
-    const stack = middlewares
+function Pipeline(...middlewares) {
+const stack = middlewares
 
-    const push = (...middlewares) => {
-        stack.push(...middlewares)
+const push = (...middlewares) => {
+    stack.push(...middlewares)
+}
+
+const execute = async (context) => {
+    let prevIndex = -1
+
+    const runner = async (index) => {
+    if (index === prevIndex) {
+        throw new Error('next() called multiple times')
     }
 
-    const execute = async (context) => {
-        let prevIndex = -1
+    prevIndex = index
 
-        const runner = async (index) => {
-        if (index === prevIndex) {
-            throw new Error('next() called multiple times')
-        }
+    const middleware = stack[index]
 
-        prevIndex = index
-
-        const middleware = stack[index]
-
-        if (middleware) {
-            await middleware(context, () => {
-            return runner(index + 1)
-            })
-        }
-        }
-
-        await runner(0)
+    if (middleware) {
+        await middleware(context, () => {
+        return runner(index + 1)
+        })
+    }
     }
 
-    return { push, execute }
-    }
+    await runner(0)
+}
+
+return { push, execute }
+}
 ```
 
 ### Usage
 ```
-    // create a middleware pipeline
-    const pipeline = Pipeline(
-    // with an initial middleware
-    (ctx, next) => {
-        console.log(ctx)
-        next()
-    }
-    )
-
-    // add some more middlewares
-    pipeline.push(
-    (ctx, next) => {
-        ctx.value = ctx.value + 21
-        next()
-    },
-    (ctx, next) => {
-        ctx.value = ctx.value * 2
-        next()
-    }
-    )
-
-    // add the terminating middleware
-    pipeline.push((ctx, next) => {
+// create a middleware pipeline
+const pipeline = Pipeline(
+// with an initial middleware
+(ctx, next) => {
     console.log(ctx)
-    // not calling `next()`
-    })
+    next()
+}
+)
 
-    // add another one for fun ¯\_(ツ)_/¯
-    pipeline.push((ctx, next) => {
-    console.log('this will not be logged')
-    })
+// add some more middlewares
+pipeline.push(
+(ctx, next) => {
+    ctx.value = ctx.value + 21
+    next()
+},
+(ctx, next) => {
+    ctx.value = ctx.value * 2
+    next()
+}
+)
 
-    // execute the pipeline with initial value of `ctx`
-    pipeline.execute({ value: 0 })
+// add the terminating middleware
+pipeline.push((ctx, next) => {
+console.log(ctx)
+// not calling `next()`
+})
+
+// add another one for fun ¯\_(ツ)_/¯
+pipeline.push((ctx, next) => {
+console.log('this will not be logged')
+})
+
+// execute the pipeline with initial value of `ctx`
+pipeline.execute({ value: 0 })
 ```
 If you run that piece of code, can you guess what the output will be? Yeah, you guessed it right:
 ```
-    { value: 0 }
-    { value: 42 }
+{ value: 0 }
+{ value: 42 }
 ```
 By the way, this would absolutely work with async middleware functions too.
 
