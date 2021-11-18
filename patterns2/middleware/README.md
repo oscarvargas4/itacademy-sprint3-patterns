@@ -2,6 +2,8 @@
 
 Middleware makes triggers a function for the objects provided as arguments to modify this objects (acts like a filter).
 
+Middleware can be made as a Function or as a Class (see the documentation)
+
 ## Basic Middleware Pattern in JavaScript
 In Express, we have the middleware functions with this signature:
 ```
