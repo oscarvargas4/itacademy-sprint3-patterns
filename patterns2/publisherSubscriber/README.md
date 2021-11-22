@@ -1,7 +1,7 @@
 # Publisher & Subscriber with RabbitMQ
 
 ## Execution
-To execute this app, you must execute first send.js file, and then (in other console) execute receive.js file.
+To execute this app, you must execute first send.js file, and then (in other console) execute receive.js file. Remember to execute `npm install`command for install the npm packages need for run the app.
 
 Be sure to have installed RabbitMQ (https://www.rabbitmq.com/download.html) with Erlang (https://www.erlang.org/downloads)
 
